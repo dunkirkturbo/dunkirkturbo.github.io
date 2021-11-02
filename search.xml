@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Bullet Proofs</title>
+      <link href="/2021/10/31/Bullet-Proofs/"/>
+      <url>/2021/10/31/Bullet-Proofs/</url>
+      
+        <content type="html"><![CDATA[<h3 id="pedersen-commitment">Pedersen Commitment</h3><p><span class="math inline">\(Com(v)=v\cdot B+\tilde{v}\cdot\tilde{B}\)</span>，其中<span class="math inline">\(B,\tilde{B}\)</span>为椭圆曲线上的两个基点，<span class="math inline">\(v\)</span>是需要承诺的秘密数，<span class="math inline">\(\tilde{v}\)</span>为（随机）盲化因子。</p><p>具备同态加法特性，即：</p><p><span class="math inline">\(Com(v_1)+Com(v_2)=v_1\cdot B+\tilde{v_1}\cdot\tilde{B}+v_2\cdot B+\tilde{v_2}\cdot\tilde{B}=(v_1+v_2)\cdot B+(\tilde{v_1}+\tilde{v_2})\cdot\tilde{B}=Com(v_1+v_2)\)</span></p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211101220609819.png"></p><p>同态保证了UTXO交易中的Input/Output总和均是Pedersen Commitment</p><p>⭐<strong>(Pedersen Vector Commitment)</strong></p><p><span class="math inline">\(\textbf{B}=(B_1,...,B_n)\in\mathbb{G}^n\)</span></p><p><span class="math inline">\(Com(\textbf{v}=(v_1,...,v_n);\tilde{v})=\langle\textbf{v},\textbf{B}\rangle+\tilde{v}\tilde{B}\)</span></p><h3 id="bullet-proofs">Bullet Proofs</h3><h4 id="notation">Notation</h4><p>小写字母<span class="math inline">\(a,b,c\)</span>表示<span class="math inline">\(\mathbb{Z}_p\)</span>下的标量，大写字母<span class="math inline">\(G,H,P,Q\)</span>表示群<span class="math inline">\(\mathbb{G}\)</span>下的元素。向量被粗体表示，例如<span class="math inline">\(\textbf{a},\textbf{G}\)</span>。</p><p>对一个标量<span class="math inline">\(y\)</span>，用<span class="math inline">\(\textbf{y}^{n}=(1,y,y^2,...,y^{n-1})\)</span>表示相关的一个向量。</p><p>用到的Pedersen Vector Commitment定义为： <span class="math display">\[Com(\textbf{a}_L,\textbf{a}_R)=\langle\textbf{a}_L,\textbf{G}\rangle+\langle\textbf{a}_R,\textbf{H}\rangle+\tilde{a}\tilde{B}\]</span> 其中<span class="math inline">\(\textbf{G},\textbf{H}\in\mathbb{G}^n\)</span></p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211101225906030.png"></p><h4 id="inner-product-range-proof">Inner-Product Range Proof</h4><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211101222443822.png"></p><p>并将原论文中的乘法群以加法群代替，如下：</p><p><span class="math inline">\(\{(B,\tilde{B}\in\mathbb{G},V,n\ ;\ v,\tilde{v}\in\mathbb{Z}_p):V=vB+\tilde{v}\tilde{B}\ \and\ v\in[0,2^n-1]\}\)</span></p><p>令<span class="math inline">\(\textbf{a}_L=(a_1,...,a_n)\in\{0,1\}^n\)</span>表示由<span class="math inline">\(v\)</span>各个比特位组成的向量，即<span class="math inline">\(\langle\textbf{a}_L,\textbf{2}^n\rangle=v\)</span> ← ①</p><p>还需要保证<span class="math inline">\(\textbf{a}_L\)</span>仅包含<span class="math inline">\(\{0,1\}\)</span>，因此令<span class="math inline">\(\textbf{a}_R=\textbf{a}_L-\textbf{1}^n\)</span> ← ②，有<span class="math inline">\(\textbf{a}_L\circ\textbf{a}_R=\textbf{0}^n\)</span> ← ③</p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211102163505168.png"></p><p>做以下整理： <span class="math display">\[\langle\textbf{a}_L,\textbf{2}^n\rangle=v\ \and\langle\textbf{a}_L-\textbf{1}-\textbf{a}_R,\textbf{y}^n\rangle=0\ \and\ \langle\textbf{a}_L,\textbf{a}_R\circ\textbf{y}^n\rangle=0\]</span> 可进一步，令verifier选取随机<span class="math inline">\(z\in\mathbb{Z}_p\)</span>，将上述转为一个约束： <span class="math display">\[z^2\cdot v=z^2\langle\textbf{a}_L,\textbf{2}^n\rangle+z\langle\textbf{a}_L-\textbf{1}-\textbf{a}_R,\textbf{y}^n\rangle+\langle\textbf{a}_L,\textbf{a}_R\circ\textbf{y}^n\rangle\]</span> 将其转化为前面论文中提到的"a single inner-product constraint"（并令<span class="math inline">\(\textbf{a}_L\)</span>只出现在左侧，<span class="math inline">\(\textbf{a}_R\)</span>只出现在右侧，不含witness的项合并即为<span class="math inline">\(\delta\)</span>）：</p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211102165504453.png"></p><p>将此时内积的左侧记作<em>unblinded l(X)</em>，右侧记作<em>unblinded r(X)</em></p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211102171502891.png"></p><p>下面是盲化后新定义的多项式<span class="math inline">\(l(X),r(X)\)</span>，以及二次多项式<span class="math inline">\(t(X)\)</span>：</p><p><img src= "/img/loading.gif" data-src="/2021/10/31/Bullet-Proofs/image-20211102171740440.png"></p><h3 id="未完">未完</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> Blockchain </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Engineering Practice of Cryptosystem</title>
       <link href="/2021/10/28/Engineering-Practice-of-Cryptosystem/"/>
       <url>/2021/10/28/Engineering-Practice-of-Cryptosystem/</url>
