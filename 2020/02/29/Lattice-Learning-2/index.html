@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lattice-Learning-2 | 0xDktb's Blog</title><meta name="description" content="Chapter 3 Algorithm for the Closest and Shortest Vector Problems 3.1 Babai&#39;s Rounding Technique Theorem 3.1.1. Given a vector we can write \(\underline{\omega}&#x3D;\sum_{i&#x3D;1}^{n}\alpha_{i}\underline{b_{"><meta name="keywords" content="Lattice"><meta name="author" content="0xDktb"><meta name="copyright" content="0xDktb"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://0xdktb.top/2020/02/29/Lattice-Learning-2/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="Lattice-Learning-2"><meta property="og:url" content="https://0xdktb.top/2020/02/29/Lattice-Learning-2/"><meta property="og:site_name" content="0xDktb's Blog"><meta property="og:description" content="Chapter 3 Algorithm for the Closest and Shortest Vector Problems 3.1 Babai&#39;s Rounding Technique Theorem 3.1.1. Given a vector we can write \(\underline{\omega}&#x3D;\sum_{i&#x3D;1}^{n}\alpha_{i}\underline{b_{"><meta property="og:image" content="https://0xdktb.top/img/star.jpg"><meta property="article:published_time" content="2020-02-29T14:05:26.000Z"><meta property="article:modified_time" content="2020-05-19T15:29:41.440Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="About Knapsack" href="https://0xdktb.top/2020/03/02/About-Knapsack/"><link rel="next" title="Lattice-Learning-1" href="https://0xdktb.top/2020/02/29/Lattice-Learning-1/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime_unit: 'days',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">35</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#chapter-3-algorithm-for-the-closest-and-shortest-vector-problems"><span class="toc-number">1.</span> <span class="toc-text">Chapter 3 Algorithm for the Closest and Shortest Vector Problems</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#babais-rounding-technique"><span class="toc-number">1.1.</span> <span class="toc-text">3.1 Babai&#39;s Rounding Technique</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#the-embedding-technique"><span class="toc-number">1.2.</span> <span class="toc-text">3.2 The Embedding Technique</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#korkine-zolotarev-bases"><span class="toc-number">1.3.</span> <span class="toc-text">3.3 Korkine-Zolotarev Bases</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chapter-4-coppersmiths-method-and-related-applications"><span class="toc-number">2.</span> <span class="toc-text">Chapter 4 Coppersmith&#39;s Method and Related Applications</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#coppersmiths-method-for-modular-univariate-polynomials"><span class="toc-number">2.1.</span> <span class="toc-text">4.1 Coppersmith’s Method for Modular Univariate Polynomials</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#first-steps-to-coppersmiths-method"><span class="toc-number">2.1.1.</span> <span class="toc-text">4.1.1 First Steps to Coppersmith’s Method</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#the-full-coppersmith-method"><span class="toc-number">2.1.2.</span> <span class="toc-text">4.1.2 The Full Coppersmith Method</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multivariate-modular-polynomial-equations"><span class="toc-number">2.2.</span> <span class="toc-text">4.2 Multivariate Modular Polynomial Equations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bivariate-integer-polynomials"><span class="toc-number">2.3.</span> <span class="toc-text">4.3 Bivariate Integer Polynomials</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#some-applications-of-coppersmiths-method"><span class="toc-number">2.4.</span> <span class="toc-text">4.4 Some Applications of Coppersmith’s method</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fixed-padding-schemes-in-rsa"><span class="toc-number">2.4.1.</span> <span class="toc-text">4.4.1 Fixed Padding Schemes in RSA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#factoring-n-pq-with-partial-knowledge-of-p"><span class="toc-number">2.4.2.</span> <span class="toc-text">4.4.2 Factoring N &#x3D; pq with Partial Knowledge of p</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#factoring-prq"><span class="toc-number">2.4.3.</span> <span class="toc-text">4.4.3 Factoring \(p^{r}q\)</span></a></li></ol></li></ol></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><header class="post-bg" id="page-header" style="background-image: url(/img/star.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">0xDktb's Blog</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Lattice-Learning-2</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="Created 2020-02-29 22:05:26"><i class="far fa-calendar-alt fa-fw"></i> Created 2020-02-29</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="Updated 2020-05-19 23:29:41"><i class="fas fa-history fa-fw"></i> Updated 2020-05-19</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Crypto/">Crypto</a></span></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="chapter-3-algorithm-for-the-closest-and-shortest-vector-problems">Chapter 3 Algorithm for the Closest and Shortest Vector Problems</h2>
+<h3 id="babais-rounding-technique">3.1 Babai's Rounding Technique</h3>
+<p><strong>Theorem 3.1.1.</strong> Given a vector we can write <span class="math inline">\(\underline{\omega}=\sum_{i=1}^{n}\alpha_{i}\underline{b_{i}}\)</span> with <span class="math inline">\(\alpha_{i}\in R\)</span>. The rounding technique is simply to set <span class="math display">\[
+\underline{v}=\sum_{i=1}^{n}\lfloor \alpha_{i}\rceil\underline{b_{i}}
+\]</span> <span class="math inline">\(\left\|\underline{v}-\underline{w}\right\|\)</span> is within an exponential factor of the minimal value if the basis is LLL-Reduced. The method trivially generalises to non-full-rank lattices as long as <span class="math inline">\(\underline{\omega}\)</span> lies in the R-span of the basis.</p>
+<p><strong>Theorem 3.1.2.</strong> Let <span class="math inline">\(\{\underline{b}_{1},...,\underline{b}_{n}\}\)</span> be an LLL-Reduced basis (with factor <span class="math inline">\(\delta=\frac{3}{4}\)</span>) for a Lattice <span class="math inline">\(L\subset R^{n}\)</span>. Then the output <span class="math inline">\(\underline{v}\)</span> of the Babai rounding method on input <span class="math inline">\(\underline{\omega}\in R^{n}\)</span> satisfies <span class="math display">\[
+\left\|\underline{\omega}-\underline{v}\right\|\leq (1+2n(9/2)^{n/2})\left\|\underline{\omega}-\underline{u}\right\|
+\]</span> for all <span class="math inline">\(\underline{u}\in L\)</span>.</p>
+<h3 id="the-embedding-technique">3.2 The Embedding Technique</h3>
+<p><strong>Theorem 3.2.1.</strong> Embedding's solution to the CVP corresponds to integers <span class="math inline">\(l_{1},...,l_{n}\)</span> such that <span class="math display">\[
+\underline{\omega}\approx\sum_{i=1}^{n}l_{i}\underline{b_{i}}
+\]</span> The idea is to define a lattice L' that contains the short vector <span class="math inline">\(\underline{e}(\underline{e}=\underline{\omega}-\sum_{i=1}^{n}l_{i}\underline{b_{i}})\)</span>. Let <span class="math inline">\(M\in R_{&gt;0}\)</span> (usually let M=1). The lattice L' is defined by the vectors (which are a basis for <span class="math inline">\(R^{n+1}\)</span>) <span class="math display">\[
+(\underline{b_{1}},0),...,(\underline{b_{n}},0),(\underline{\omega},M)
+\]</span> Hence, we might be able to find <span class="math inline">\(\underline{e}\)</span> by solving the SVP problem in the lattice L'. Then we can solve the CVP by subtracting <span class="math inline">\(\underline{e}\)</span> from <span class="math inline">\(\underline{\omega}\)</span>.</p>
+<p>Example: the CVP whose basis is for <span class="math inline">\(R^{1}\)</span></p>
+<p><img src= "/img/loading.gif" data-src="/2020/02/29/Lattice-Learning-2/image-20200302001321511.png"></p>
+<p>add <span class="math inline">\((\underline{\omega},M)\)</span> to define L' in <span class="math inline">\(R^{2}\)</span></p>
+<p><img src= "/img/loading.gif" data-src="/2020/02/29/Lattice-Learning-2/image-20200302001737673.png"></p>
+<p>solving the SVP to find <span class="math inline">\(\delta\)</span></p>
+<p><img src= "/img/loading.gif" data-src="/2020/02/29/Lattice-Learning-2/image-20200302001826288.png"></p>
+<p><strong>Lemma 3.2.2.</strong> Let <span class="math inline">\(\{\underline{b}_{1},...,\underline{b}_{n}\}\)</span> be a basis for a lattice <span class="math inline">\(L\subset Z^{n}\)</span> and donate by <span class="math inline">\(\lambda_1\)</span> the shortest Euclidean length of a non-zero element of L. Let <span class="math inline">\(\underline{\omega}\in R^{n}\)</span> and let <span class="math inline">\(\underline{v}\in L\)</span> be a closest lattice point to <span class="math inline">\(\underline{\omega}\)</span>. Define <span class="math inline">\(\underline{e}=\underline{\omega}-\underline{v}\)</span>. Suppose that <span class="math inline">\(\left\|\underline{e}\right\|&lt;\lambda_1/2\)</span> and let <span class="math inline">\(M=\left\|\underline{e}\right\|\)</span>. Then <span class="math inline">\((\underline{e},M)\)</span> is a shortest non-zero vector in the lattice L' of the embedding technique.</p>
+<p>Proof: All vectors in L' are of the form <span class="math display">\[
+l_{n+1}(\underline{e},M)+\sum_{i=1}^{n}l_{i}(\underline{b}_{1},0)
+\]</span> for some <span class="math inline">\(l_{i}\in Z\)</span>. It is clear that every non-zero vector with <span class="math inline">\(l_{n+1}=0\)</span> is of length at least <span class="math inline">\(\lambda_{1}\)</span>.</p>
+<p>Since <span class="math inline">\(\left\|(\underline{e},M)\right\|^{2}=\left\|\underline{e}\right\|^{2}+M^{2}=2M^{2}&lt;\frac{\lambda^{2}}{2}\)</span>, the vector <span class="math inline">\((\underline{e},M)\)</span> has length at most <span class="math inline">\(\frac{\lambda_1}{\sqrt{2}}\)</span>. Since <span class="math inline">\(\underline{v}\)</span> is a closest vector to <span class="math inline">\(\underline{\omega}\)</span> in the lattice L, <span class="math inline">\(\forall_{\underline{x}\in L},s.t.\left\|\underline{e}\right\|\leq \left\|\underline{e}+\underline{x}\right\|\)</span>. SVP's correctness proved.</p>
+<h3 id="korkine-zolotarev-bases">3.3 Korkine-Zolotarev Bases</h3>
+<blockquote>
+<p>Schnorr has developed the block Korkine-Zolotarev lattice basis reduction algorithm, which computes a Korkine-Zolotarev basis for small dimensional projections of the original lattice and combines this with the LLL algorithm. The output basis can be proved to be of a better quality than an LLL-reduced basis. This is the most powerful algorithm for fifinding short vectors in lattices of large dimension.</p>
+</blockquote>
+<h2 id="chapter-4-coppersmiths-method-and-related-applications">Chapter 4 Coppersmith's Method and Related Applications</h2>
+<h3 id="coppersmiths-method-for-modular-univariate-polynomials">4.1 Coppersmith’s Method for Modular Univariate Polynomials</h3>
+<h4 id="first-steps-to-coppersmiths-method">4.1.1 First Steps to Coppersmith’s Method</h4>
+<p>Let <span class="math inline">\(F(x)=x^{d}+a_{d-1}x^{d-1}+...+a_{1}x+a_{0}\)</span> be a monic polynomial of degree d with integer coefficients. Suppose we know that there exist one or more integers <span class="math inline">\(x_{0}\)</span> such that <span class="math inline">\(F(x)\equiv 0(mod\ M)\)</span> and that <span class="math inline">\(x_{0}&lt;M^{\frac{1}{d}}\)</span>. The problem is to find all such roots.</p>
+<p>Since <span class="math inline">\(|x_{0}^{i}|&lt;M\)</span> for all <span class="math inline">\(0\leq i\leq d\)</span> then, if the coefficients of F(x) are small enough, one might have <span class="math inline">\(F(x_{0})=0\)</span> over Z. In this case, the problem can be easily solved by Newton's method (round the approximations of the roots to the nearest integer and check whether they are solutions of F(x)). However, we wanna deal with polynomials F(x) having a small solution but whose coefficients are not small.</p>
+<p>Coppersmith’s idea is to build from F(x) a polynomial <strong>G(x)</strong> that still has the same solution <span class="math inline">\(x_{0}\)</span>, but which has <strong>coefficients small enough</strong>.</p>
+<p><strong>Theorem 4.1.1.</strong> (Howgrave-Graham [296]) Let <span class="math inline">\(M, X\in N\)</span> and let <span class="math inline">\(F(x)=\sum_{i=0}^{d}a_{i}x^{i}\in Z[x]\)</span>. Suppose <span class="math inline">\(x_{0}\in Z\)</span> is a solution to <span class="math inline">\(F(x)\equiv 0(mod\ M)\)</span> such that <span class="math inline">\(|x_{0}|&lt;X\)</span>. We associate with the polynomial F(x) the row vector <span class="math inline">\(b_F=(a_0,a_{1}X,a_{2}X^{2},...,a_{d}X^{d})\)</span>. If <span class="math inline">\(\left\|b_{F}\right\|&lt;\frac{M}{\sqrt{d+1}}\)</span> then <span class="math inline">\(F(x_{0})=0\)</span>.</p>
+<p><strong>Proof:</strong> Cauchy-Schwarz inequality <span class="math inline">\(\rightarrow\sum_{i=1}^{n}x_{i}\leq \sqrt{n\sum_{i=1}^{n}x_{i}^{2}}\)</span>.</p>
+<p>So, <span class="math inline">\(|F(x_{0})|=|\sum_{i=0}^{d}a_{i}x_{0}^{i}|\leq \sum_{i=0}^{d}|a_{i}||x_{0}|^{i}\leq \sum_{i=0}^{d}|a_{i}|X^{i}\leq \sqrt{d+1}\left\|b_{F}\right\|&lt;\sqrt{d+1}\frac{M}{\sqrt{d+1}}=M\)</span>.</p>
+<p><span class="math inline">\(\therefore F(x_{0})=0\)</span>.</p>
+<p>Then how to transform F(x) to G(x) we need?</p>
+<p>To do this, consider the d+1 polynomials <span class="math inline">\(G_{i}(x)=Mx^{i}\)</span> for <span class="math inline">\(0\leq i&lt;d\)</span> and F(x). They all have the solution <span class="math inline">\(x=x_{0}\)</span> module M. Define the lattice L with the basis B <span class="math display">\[
+B=\left(
+ \begin{matrix}
+   M &amp; 0 &amp; ... &amp; 0 &amp; 0 \\
+   0 &amp; MX &amp; ... &amp; 0 &amp; 0 \\
+   ... &amp; ... &amp; ... &amp; ... &amp; ... \\
+   0 &amp; 0 &amp; ... &amp; MX^{d-1} &amp; 0 \\
+   a_0 &amp; a_1X &amp; ... &amp; a_{d-1}X^{d-1} &amp; X^{d}
+  \end{matrix}
+ \right).
+\]</span> <strong>Theorem 4.1.2.</strong> Let G(x) be the polynomial corresponding to the first vector <span class="math inline">\(\underline{b}_{1}\)</span> in the LLL-Reduced basis for L. Set <span class="math inline">\(c_{1}(d)=2^{-\frac{1}{2}}(d+1)^{-\frac{1}{d}}\)</span>. If <span class="math inline">\(X&lt;c_{1}(d)\cdot M^{\frac{2}{d(d+1)}}\)</span> then any root <span class="math inline">\(x_{0}\)</span> of F(x) module M such that <span class="math inline">\(|x_{0}|\leq X\)</span> satisfies <span class="math inline">\(G(x_{0})=0\)</span> in Z. (i.e., if <span class="math inline">\(\sqrt{d+1}\cdot 2^{\frac{d}{4}}\cdot X^{\frac{d}{2}}&lt;M^{\frac{1}NaN}\)</span>, ...)</p>
+<h4 id="the-full-coppersmith-method">4.1.2 The Full Coppersmith Method</h4>
+<p>Compared to previous section, some benefits can be obtained by using x-shifts. (Get larger X)</p>
+<p><strong>Theorem 4.1.3.</strong> (Coppersmith) Let <span class="math inline">\(0&lt;\epsilon&lt;min\{0.18,\frac{1}{d}\}\)</span>. Let F(x) be a monic polynomial of degree d with one or more small roots <span class="math inline">\(x_{0}\)</span> module M such that <span class="math inline">\(|x_{0}|&lt;\frac{1}{2}M^{\frac{1}{d}-\epsilon}\)</span>. Then <span class="math inline">\(x_{0}\)</span> can be found in time bounded by a polynomial in d, <span class="math inline">\(\frac{1}{\epsilon}\)</span> and log(M).</p>
+<h3 id="multivariate-modular-polynomial-equations">4.2 Multivariate Modular Polynomial Equations</h3>
+<p><strong>Theorem 4.2.1.</strong> Let <span class="math inline">\(F(x,y)\in Z[x,y]\)</span> be a polynomial of total degree d (i.e., every monomial <span class="math inline">\(x^{i}y^{j}\)</span> satisfies <span class="math inline">\(i+j\leq d\)</span>). Let <span class="math inline">\(X,Y,M\in N\)</span> be such that <span class="math inline">\(XY&lt;M^{\frac{1}{d}-\epsilon}\)</span> for some <span class="math inline">\(0&lt;\epsilon &lt;\frac{1}{d}\)</span>. Then one can compute (in time polynomial in log(M) and <span class="math inline">\(\frac{1}{\epsilon}&gt;d\)</span>) polynomials <span class="math inline">\(F_{1}(x,y),F_{2}(x,y)\in Z[x,y]\)</span> such that, for all <span class="math inline">\((x_{0},y_{0})\in Z^{2}\)</span> with <span class="math inline">\(|x_{0}|&lt;X,|y_{0}|&lt;Y\)</span> and <span class="math inline">\(F(x_{0},y_{0})\equiv 0(mod\ M)\)</span>, one has <span class="math inline">\(F_{1}(x_{0},y_{0})=F_{2}(x_{0},y_{0})=0\)</span> over Z.</p>
+<h3 id="bivariate-integer-polynomials">4.3 Bivariate Integer Polynomials</h3>
+<p><strong>Theorem 4.3.1.</strong> Let <span class="math inline">\(F(x,y)\in Z[x,y]\)</span> and let <span class="math inline">\(d\in N\)</span> be such that <span class="math inline">\(deg_{x}(F(x,y)),deg_{y}(F(x,y))\leq d\)</span>. Write <span class="math display">\[
+F(x,y)=\sum_{0\leq i,j\leq d}F_{i,j}x^{i}y^{j}
+\]</span> For <span class="math inline">\(X,Y\in N\)</span>, we define <span class="math display">\[
+W=max_{0\leq i,j\leq d}|F_{i,j}|X^{i}Y^{j}
+\]</span> If <span class="math inline">\(XY&lt;W^{\frac{2}{3d}}\)</span> then there is an algorithm that takes as input F(x,y),X,Y, runs in time (bit operations) bounded by a polynomial in log(W) and <span class="math inline">\(2^{d}\)</span>, and outputs all pairs <span class="math inline">\((x_{0},y_{0})\in Z^{2}\)</span> such that <span class="math inline">\(F(x_{0},y_{0})=0,|x_0|\leq X,|y_0|\leq Y\)</span>.</p>
+<h3 id="some-applications-of-coppersmiths-method">4.4 Some Applications of Coppersmith’s method</h3>
+<h4 id="fixed-padding-schemes-in-rsa">4.4.1 Fixed Padding Schemes in RSA</h4>
+<p>It is necessary to use padding schemes for RSA encryption and one simple proposal for k-bit RSA moduli is to take a k' bit message and pad it by putting (k-k'-1) ones to the left hand side of it. This padding scheme is sometimes called <strong>fixed pattern padding</strong>. <span class="math display">\[
+F(x)=(2^{k}-2^{k&#39;}+x)^{e}-c\equiv 0(mod\ N)
+\]</span> Then if <span class="math inline">\(|x|&lt;\frac{1}{2}N^{\frac{1}{e}}(k&#39;&lt;\frac{k}{e}-1)\)</span>, Coppersmith's method can solve it in polynomial time.</p>
+<h4 id="factoring-n-pq-with-partial-knowledge-of-p">4.4.2 Factoring N = pq with Partial Knowledge of p</h4>
+<p>Given an approximation <span class="math inline">\(\tilde{p}\)</span> to p such that <span class="math inline">\(p=\tilde{p}+x_{0}\)</span> where <span class="math inline">\(|x_{0}|&lt;X\)</span>. The polynomial <span class="math inline">\(F(x)=(x+\tilde{p})\)</span> has a small solution module p. The problem is that we don’t know p, but we do know a multiple of p (i.e., N). The idea is to form a lattice corresponding to polynomials that have a small root modulo p and to apply Coppersmith’s method to find this root <span class="math inline">\(x_0\)</span>.</p>
+<p><strong>Theorem 4.4.1.</strong> Let N=pq with p&lt;q&lt;2p. Let <span class="math inline">\(0&lt;\epsilon &lt;\frac{1}{4}\)</span>, and suppose <span class="math inline">\(\tilde{p}\in N\)</span> is such that <span class="math inline">\(|p-\tilde{p}|\leq \frac{1}{2\sqrt{2}}N^{\frac{1}{4}-\epsilon}\)</span>. Then given N and <span class="math inline">\(\tilde{p}\)</span> one can factor N in time polynomial in log(N) and <span class="math inline">\(\frac{1}{\epsilon}\)</span>.</p>
+<p>By constructing lattice whose basis including <span class="math inline">\(NX^{i},X^{i}F(X)\)</span>.</p>
+<h4 id="factoring-prq">4.4.3 Factoring <span class="math inline">\(p^{r}q\)</span></h4>
+<p><strong>Example 4.4.2. (Takagi-RSA)</strong> Let <span class="math inline">\(N=p^{r}q\)</span> where p and q are primes and r&gt;1. Suppose the public exponent e in RSA is small. One can compute <span class="math inline">\(c^{d}(mod\ N)\)</span> as follows. Let <span class="math inline">\(d_{p}\equiv d(mod\ p-1)\)</span> and <span class="math inline">\(d_{q}\equiv d(mod\ q-1)\)</span>. One first computes <span class="math inline">\(m_{p}=c^{d_{p}}(mod\ p)\)</span> and <span class="math inline">\(m_{q}=c^{d_{q}}(mod\ q)\)</span>.</p>
+<p>Then we can determine <span class="math inline">\(m(mod\ p^{r})\)</span> from <span class="math inline">\(m_p\)</span> by using Hensel lifting. If we have determined <span class="math inline">\(m_{i}\equiv m (mod\ p^{i})\)</span> then we lift to a solution modulo <span class="math inline">\(p^{i+1}\)</span> by writing <span class="math inline">\(m_{i+1}=m_{i}+kp^{i}\)</span>, where k is a variable. Then <span class="math display">\[
+m_{i+1}^{e}=(m_{i}+kp^{i})^{e}\equiv m_{i}^{e}+ekp^{i}m_{i}^{e-1}\equiv c(mod\ p^{i+1})
+\]</span> gives <span class="math inline">\(k\ mod(p^{i+1})\)</span>. The equation above is only efficient when e is small. If e is large then the Hensel lifting stage is no faster than just computing <span class="math inline">\(c^{d(mod\ \varphi(p^{r}))}(mod\ p^{r})\)</span> directly.</p>
+<p>Coppersmith’s method can be used to factor integers of the form <span class="math inline">\(N=p^{r}q\)</span> when r is large. If one knows r and an approximation <span class="math inline">\(\tilde{p}\)</span> to p then there is a small root of the polynomial equation <span class="math display">\[
+F(x)=(\tilde{p}+x)^{r}\equiv 0(mod\ p^{r})
+\]</span> It is shown that if <span class="math inline">\(r\geq log(p)\)</span> then the algorithm runs in polynomial-time.</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">0xDktb</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://0xdktb.top/2020/02/29/Lattice-Learning-2/">https://0xdktb.top/2020/02/29/Lattice-Learning-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Lattice/">Lattice</a></div><div class="post_share"><div class="social-share" data-image="/img/star.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><button class="reward-button"><i class="fas fa-qrcode"></i> Donate<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="post-qr-code__img" src="/img/wx.jpg" alt="wechat" onclick="window.open('/img/wx.jpg')"/><div class="post-qr-code__desc">wechat</div></li><li class="reward-item"><img class="post-qr-code__img" src="/img/zfb.jpg" alt="alipay" onclick="window.open('/img/zfb.jpg')"/><div class="post-qr-code__desc">alipay</div></li></ul></div></button></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/03/02/About-Knapsack/"><img class="prev-cover" data-src="/img/star.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">About Knapsack</div></div></a></div><div class="next-post pull-right"><a href="/2020/02/29/Lattice-Learning-1/"><img class="next-cover" data-src="/img/star.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Lattice-Learning-1</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/03/02/About-Knapsack/" title="About Knapsack"><img class="relatedPosts_cover" data-src="/img/star.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-02</div><div class="relatedPosts_title">About Knapsack</div></div></a></div><div class="relatedPosts_item"><a href="/2020/02/29/Lattice-Learning-1/" title="Lattice-Learning-1"><img class="relatedPosts_cover" data-src="/img/star.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="relatedPosts_title">Lattice-Learning-1</div></div></a></div></div></div></article></main><footer id="footer" style="background-image: url(/img/star.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2022 By 0xDktb</div><div class="framework-info"><span>Driven </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>湘ICP备19022012号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="font_plus" title="Increase Font Size"><i class="fas fa-plus"></i></button><button id="font_minus" title="Decrease Font Size"><i class="fas fa-minus"></i></button><button class="translate_chn_to_cht" id="translateLink" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button></div><div id="rightside-config-show"><button id="rightside_config" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script></body></html>
