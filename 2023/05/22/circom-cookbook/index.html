@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>circom cookbook | 0xDktb's Blog</title><meta name="description" content="Compile circom and test circom+snarkjs测试（e.g. bn.circom）： 1234567891011121314151617circom bn.circom --r1cs --wasm --sym --ccd bn_js# create input.json in bn_jssnarkjs wc bn.wasm input.json witness.w"><meta name="author" content="0xDktb"><meta name="copyright" content="0xDktb"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://dunkirkturbo.github.io/2023/05/22/circom-cookbook/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="circom cookbook"><meta property="og:url" content="https://dunkirkturbo.github.io/2023/05/22/circom-cookbook/"><meta property="og:site_name" content="0xDktb's Blog"><meta property="og:description" content="Compile circom and test circom+snarkjs测试（e.g. bn.circom）： 1234567891011121314151617circom bn.circom --r1cs --wasm --sym --ccd bn_js# create input.json in bn_jssnarkjs wc bn.wasm input.json witness.w"><meta property="og:image" content="https://dunkirkturbo.github.io/img/star.jpg"><meta property="article:published_time" content="2023-05-22T02:41:31.000Z"><meta property="article:modified_time" content="2023-05-22T02:44:21.864Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="next" title="Tornado Cash" href="https://dunkirkturbo.github.io/2023/05/08/Tornado-Cash/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime_unit: 'days',
+  runtime: false,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true
+  }</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">38</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#compile-circom-and-test"><span class="toc-number">1.</span> <span class="toc-text">Compile circom and test</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#scalar-size-does-not-match"><span class="toc-number">2.</span> <span class="toc-text">Scalar size does not match</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#non-quadratic-constraints-are-not-allowed"><span class="toc-number">3.</span> <span class="toc-text">Non quadratic constraints are not allowed</span></a></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="photo"></div><header class="post-bg" id="page-header" style="background-image: url(/img/star.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">0xDktb's Blog</a></span><span class="pull-right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">circom cookbook</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="Created 2023-05-22 10:41:31"><i class="far fa-calendar-alt fa-fw"></i> Created 2023-05-22</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="Updated 2023-05-22 10:44:21"><i class="fas fa-history fa-fw"></i> Updated 2023-05-22</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Blockchain/">Blockchain</a><i class="fas fa-angle-right post-meta__separator"></i><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/Postgraduate/">Postgraduate</a></span></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"></span><span class="post-meta-commentcount"></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h4 id="compile-circom-and-test">Compile circom and test</h4>
+<p>circom+snarkjs测试（e.g. bn.circom）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">circom bn.circom --r1cs --wasm --sym --c</span><br><span class="line">cd bn_js</span><br><span class="line"><span class="meta">#</span><span class="bash"> create input.json <span class="keyword">in</span> bn_js</span></span><br><span class="line"></span><br><span class="line">snarkjs wc bn.wasm input.json witness.wtns</span><br><span class="line"></span><br><span class="line">snarkjs powersoftau new bn128 12 pot12_0000.ptau -v</span><br><span class="line">snarkjs powersoftau contribute pot12_0000.ptau pot12_0001.ptau --name="First contribution" -v</span><br><span class="line"></span><br><span class="line">snarkjs powersoftau prepare phase2 pot12_0001.ptau pot12_final.ptau -v</span><br><span class="line">snarkjs g16s ../bn.r1cs pot12_final.ptau bn_0000.zkey</span><br><span class="line">snarkjs zkey contribute bn_0000.zkey bn_0001.zkey --name="1st Contributor Name" -v</span><br><span class="line"></span><br><span class="line">snarkjs zkey export verificationkey bn_0001.zkey verification_key.json</span><br><span class="line"></span><br><span class="line">snarkjs g16p bn_0001.zkey witness.wtns proof.json public.json</span><br><span class="line">snarkjs g16v verification_key.json public.json proof.json</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/iden3/snarkjs" target="_blank" rel="noopener">https://github.com/iden3/snarkjs</a></p>
+<h4 id="scalar-size-does-not-match">Scalar size does not match</h4>
+<p>circom (groth16) 不允许输出门只有add operation的情况，当constraints: 0时，生成proof会报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ERROR] snarkJS: Error: Scalar size does not match</span><br></pre></td></tr></table></figure>
+<p><img src= "/img/loading.gif" data-src="/2023/05/22/circom-cookbook/image-20230521204450656.png" alt="image-20230521204450656" style="zoom:50%;"></p>
+<p>但有multiply operation时，circom编译会做处理，使得约束整合成quadratic的形式（<span class="math inline">\(A*B-C=0\)</span>），并压缩电路大小：</p>
+<figure>
+<img src= "/img/loading.gif" data-src="/2023/05/22/circom-cookbook/image-20230521142208277.png" alt="image-20230521142208277"><figcaption aria-hidden="true">image-20230521142208277</figcaption>
+</figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c &lt;== a + b;</span><br><span class="line">d &lt;== a * b;</span><br><span class="line"></span><br><span class="line">[-a] * [c - a] - [-d] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="non-quadratic-constraints-are-not-allowed">Non quadratic constraints are not allowed</h4>
+<p>circom无法直接处理<code>%</code>，<code>&gt;&gt;</code>，<code>**</code>等约束，会报错Non quadratic constraints are not allowed</p>
+<p><strong>test_mod.circom</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// without LessThan, constraints: 0, [ERROR] snarkJS: Error: Scalar size does not match</span></span><br><span class="line">template test_mod(wbits, b) &#123;</span><br><span class="line">    assert(wbits &lt;= <span class="number">252</span>);</span><br><span class="line">    signal input a;</span><br><span class="line">    signal output r;    <span class="comment">// a = q * b + r</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// signal q;</span></span><br><span class="line">    <span class="comment">// q &lt;-- a \ b;</span></span><br><span class="line">    r &lt;-- a % b;</span><br><span class="line"></span><br><span class="line">    component lessThan = LessThan(wbits);</span><br><span class="line">    lessThan.in[<span class="number">0</span>] &lt;== r;</span><br><span class="line">    lessThan.in[<span class="number">1</span>] &lt;== b;</span><br><span class="line">    lessThan.out === <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a === q * b + r;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure>
+<img src= "/img/loading.gif" data-src="/2023/05/22/circom-cookbook/image-20230522095150094.png" alt="image-20230522095150094"><figcaption aria-hidden="true">image-20230522095150094</figcaption>
+</figure>
+<p>需要注意的是，<code>snarkjs rp</code>打印出的R1CS约束，在常数项的<code>x*1</code>并不显示<code>*</code>，因此实际上前若干项<code>[ 218882428718392752222464057452572750885483644004160343436982041865758084956161 +main.lessThan.n2b.out[i] ] * [ main.lessThan.n2b.out[i] ] - [  ] = 0</code>表示约束<code>[ -1 +main.lessThan.n2b.out[i] ] * [ main.lessThan.n2b.out[i] ] - [  ] = 0</code></p>
+<p><img src= "/img/loading.gif" data-src="/2023/05/22/circom-cookbook/image-20230522095332316.png" alt="image-20230522095332316" style="zoom:50%;"></p>
+<p>在对应的bn.sym符号表中，可以看到circom简化了约束（移除部分signal）</p>
+<p><strong>test_rsh.circom</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">template test_rsh(wbits, b) &#123;</span><br><span class="line">    assert(wbits &lt;= <span class="number">253</span>);</span><br><span class="line">    signal input a;</span><br><span class="line">    signal output r;</span><br><span class="line"></span><br><span class="line">    signal check_a;</span><br><span class="line">    component lessThan = LessThan(wbits);</span><br><span class="line"></span><br><span class="line">    r &lt;-- a &gt;&gt; b;</span><br><span class="line">    check_a &lt;== r * (<span class="number">1</span> &lt;&lt; b);</span><br><span class="line"></span><br><span class="line">    lessThan.in[<span class="number">0</span>] &lt;== a - check_a;</span><br><span class="line">    lessThan.in[<span class="number">1</span>] &lt;== (<span class="number">1</span> &lt;&lt; b); </span><br><span class="line">    lessThan.out === <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>test_dlp.circom</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">template test_dlp(a, n) &#123;</span><br><span class="line">    signal input x; <span class="comment">// n-bit</span></span><br><span class="line">    signal output y;    <span class="comment">// y = a ^ x</span></span><br><span class="line"></span><br><span class="line">    component n2b = Num2Bits(n);</span><br><span class="line">    n2b.in &lt;== a;</span><br><span class="line"></span><br><span class="line">    signal y1[n];</span><br><span class="line">    signal y2[n - <span class="number">1</span>];</span><br><span class="line">    y1[<span class="number">0</span>] &lt;== <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">var</span> tmp = n2b.out[n - i] * (a - <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">        y2[i - <span class="number">1</span>] &lt;== tmp * y1[i - <span class="number">1</span>];</span><br><span class="line">        y1[i] &lt;== y2[i - <span class="number">1</span>] * y2[i - <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> tmp = n2b.out[<span class="number">0</span>] * (a - <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    y &lt;== y1[n - <span class="number">1</span>] * tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>dlp的思路是调用<code>Num2Bits</code>，再基于快速幂（在每一位上做条件乘法和平方）</p>
+<p>进一步，若<code>r = rsh(a&gt;&gt;b)</code>的<code>b</code>也作为witness，则可以通过<code>dlp</code>组件获得<code>c = 2 ^ b</code>，再创建约束<code>check_a &lt;== c * r</code>，最后调用<code>LessThan</code>组件即可</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">0xDktb</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://dunkirkturbo.github.io/2023/05/22/circom-cookbook/">https://dunkirkturbo.github.io/2023/05/22/circom-cookbook/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/star.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><button class="reward-button"><i class="fas fa-qrcode"></i> Donate<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="post-qr-code__img" src="/img/wx.jpg" alt="wechat" onclick="window.open('/img/wx.jpg')"/><div class="post-qr-code__desc">wechat</div></li><li class="reward-item"><img class="post-qr-code__img" src="/img/zfb.jpg" alt="alipay" onclick="window.open('/img/zfb.jpg')"/><div class="post-qr-code__desc">alipay</div></li></ul></div></button></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/05/08/Tornado-Cash/"><img class="next-cover" data-src="/img/star.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Tornado Cash</div></div></a></div></nav></article></main><footer id="footer" style="background-image: url(/img/star.jpg)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2023 By 0xDktb</div><div class="framework-info"><span>Driven </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="icp"><a href="http://www.beian.miit.gov.cn" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>湘ICP备19022012号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><button id="readmode" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="font_plus" title="Increase Font Size"><i class="fas fa-plus"></i></button><button id="font_minus" title="Decrease Font Size"><i class="fas fa-minus"></i></button><button class="translate_chn_to_cht" id="translateLink" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button></div><div id="rightside-config-show"><button id="rightside_config" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/search/local-search.js"></script></body></html>
